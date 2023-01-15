@@ -1,0 +1,176 @@
+<html>
+
+<head>
+    <title>To-do List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        #todo-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #todo-list li {
+            padding: 12px;
+            border-bottom: 1px solid #dddddd;
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+        }
+
+        /* Add a hover effect to the list items */
+        #todo-list li:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Style the form and buttons */
+        #todo-form {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            background-color: rgb(36, 109, 243);
+            height: 30%;
+        }
+
+        #todo-input {
+            flex-grow: 1;
+            margin-right: 10px;
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #dddddd;
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            position: absolute;
+            top: 20px;
+            left: 45%;
+            font-size: 40px;
+            color: white;
+        }
+
+        button {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Style the checkbox */
+        .checkbox {
+            cursor: pointer;
+        }
+
+        /* Style the task text when checked */
+        .checked {
+            text-decoration: line-through;
+            color: #232;
+
+        }
+
+        .checkbox {
+            margin-left: auto;
+
+        }
+
+        .editBtn,
+        .deleteBtn {
+            margin: 10px 10px;
+        }
+
+        .checkbox {
+            padding-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <form id="todo-form">
+        <h1> TODO LIST</h1>
+        <input type="text" id="todo-input" placeholder="Enter a task">
+        <button type="submit">Add Task</button>
+
+
+
+    </form>
+
+
+    <ul id="todo-list"></ul>
+
+    <script>
+        // Get the form and list elements
+        var form = document.getElementById('todo-form');
+        var list = document.getElementById('todo-list');
+
+        // Handle form submission
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var input = document.getElementById('todo-input');
+
+            // Get the task value
+            var task = input.value;
+
+            // Create a new list item
+            var item = document.createElement('li');
+            var checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.classList.add('checkbox');
+            item.appendChild(checkbox);
+            var taskValue = document.createElement('span');
+
+            taskValue.innerHTML = task;
+            item.appendChild(taskValue);
+
+            // Create action cells (edit and delete)
+            var editBtn = document.createElement('button');
+            editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+            var deleteBtn = document.createElement('button');
+            deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+            item.appendChild(editBtn);
+            item.appendChild(deleteBtn)
+            // Add the task to the list
+            list.appendChild(item);
+
+            // Clear the input field
+            input.value = '';
+
+            // Handle checkbox click
+            checkbox.addEventListener('click', function () {
+                taskValue.classList.toggle('checked');
+            });
+
+            // Handle edit button click
+            editBtn.addEventListener('click', function () {
+                var editInput = document.createElement('input');
+                editInput.value = taskValue.innerHTML;
+                item.insertBefore(editInput, taskValue);
+                item.removeChild(taskValue);
+                editInput.focus();
+                editInput.addEventListener('keydown', function (e) {
+                    if (e.keyCode === 13) {
+                        if (editInput.value) {
+                            taskValue.innerHTML = editInput.value;
+                            item.insertBefore(taskValue, editInput);
+                            item.removeChild(editInput);
+                        } else {
+                            list.removeChild(item);
+                        }
+                    }
+                });
+            });
+
+            // Handle delete button click
+            deleteBtn.addEventListener('click', function () {
+                list.removeChild(item);
+            });
+        });
+    </script>
+</body>
+
+</html>
